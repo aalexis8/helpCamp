@@ -29,6 +29,15 @@ app.set("views", path.join(__dirname, "views"));
 app.get("/", (req, res) => {
   res.render("home");
 });
+app.get("/makecampground", async (req, res) => {
+  const camp = new Campground({
+    title: "My Backyard",
+    description: "camping on the cheap!",
+  });
+  await camp.save();
+  // res.render("home");
+  res.send(camp);
+});
 app.listen(3000, () => {
   console.log("Listening on Port 3000");
 });
