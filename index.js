@@ -8,13 +8,6 @@ mongoose.connect("mongodb://prox6venode01.leahbelle.lan:2717/helpCamp", {
   useCreateIndex: true,
   useUnifiedTopology: true,
 });
-// .then(() => {
-//   console.log("MONGODB IS AVAILABLE!!");
-// })
-// .catch((err) => {
-//   console.log("DIDN'T CONNECT TO MONGODB!!!");
-//   console.log(err);
-// });
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -26,18 +19,15 @@ const app = express();
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
 app.get("/", (req, res) => {
   res.render("home");
 });
-app.get("/makecampground", async (req, res) => {
-  const camp = new Campground({
-    title: "My Backyard",
-    description: "camping on the cheap!",
-  });
-  await camp.save();
-  // res.render("home");
-  res.send(camp);
+app.get("/campgrounds", async (req, res) => {
+  const campgrounds = await Campground.find({});
+  res.render("campgrounds/index", { campgrounds });
 });
+
 app.listen(3000, () => {
   console.log("Listening on Port 3000");
 });
